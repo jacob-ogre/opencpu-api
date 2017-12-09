@@ -57,3 +57,19 @@ function get_plot( $atts = [] ) {
 }
 add_shortcode( "get_a_plot", "get_plot" );
 
+function get_df( $atts = [] ) {
+    $a = shortcode_atts( array(
+        'pkg' => 'open.cpu.test'
+    ), $atts );
+    $url = "http://localhost:8004/ocpu/library/open.cpu.test/R/a_table/print/";
+    $ch = curl_init();
+    $timeout = 5;
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+    $data = curl_exec($ch);
+    curl_close($ch);
+    return $data;
+}
+add_shortcode( "get_a_table", "get_df" );
